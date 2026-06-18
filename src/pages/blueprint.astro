@@ -1,0 +1,458 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Ex-Layer — The AI Remediation Execution Layer" themeColor="#080b11" fontHref={"https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"}>
+<style is:inline slot="head">
+:root{
+  --bg:#080b11; --panel:#0c1119; --panel-2:#0f1620; --line:rgba(56,189,248,.14); --line-2:rgba(56,189,248,.28);
+  --cyan:#38bdf8; --cyan-br:#7dd3fc; --teal:#22d3ee; --ind:#818cf8; --grid:rgba(56,189,248,.07);
+  --em:#34d399; --amber:#fbbf24; --rose:#fb7185;
+  --t1:#e6f0f7; --t2:#90a4b8; --t3:#536074;
+  --mono:'IBM Plex Mono',monospace; --disp:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--disp);background:var(--bg);color:var(--t1);overflow-x:hidden;line-height:1.55;}
+::selection{background:rgba(56,189,248,.25);}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+.mono{font-family:var(--mono);}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:40px 40px;-webkit-mask-image:radial-gradient(ellipse 100% 80% at 50% 0%,#000 40%,transparent 85%);
+  mask-image:radial-gradient(ellipse 100% 80% at 50% 0%,#000 40%,transparent 85%);}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent;}
+nav.scrolled{background:rgba(8,11,17,.78);backdrop-filter:blur(14px);border-bottom-color:var(--line);}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px;}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.02em;}
+.logo-mark{width:30px;height:30px;border-radius:7px;border:1.5px solid var(--cyan);position:relative;box-shadow:0 0 18px rgba(56,189,248,.4);display:flex;align-items:center;justify-content:center;}
+.logo-mark::after{content:'';width:12px;height:12px;border:1.5px solid var(--cyan);border-radius:2px;}
+.nav-links{display:flex;align-items:center;gap:32px;}
+.nav-links a{font-family:var(--mono);font-size:13px;color:var(--t2);transition:color .2s;}
+.nav-links a:hover{color:var(--cyan-br);}
+@media(max-width:820px){.nav-links a:not(.btn){display:none;}}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:500;font-size:13px;cursor:pointer;border:none;transition:transform .15s cubic-bezier(.16,1,.3,1),box-shadow .2s,background .2s;}
+.btn-pri{background:var(--cyan);color:#04121c;padding:11px 20px;border-radius:8px;box-shadow:0 0 24px -4px rgba(56,189,248,.55);font-weight:600;}
+.btn-pri:hover{transform:translateY(-2px);background:var(--cyan-br);box-shadow:0 0 34px -2px rgba(56,189,248,.7);}
+.btn-ghost{background:transparent;color:var(--cyan-br);padding:11px 20px;border-radius:8px;border:1px solid var(--line-2);}
+.btn-ghost:hover{background:rgba(56,189,248,.08);transform:translateY(-2px);}
+
+/* hero */
+.hero{position:relative;z-index:1;padding:140px 0 70px;text-align:center;}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan-br);border:1px solid var(--line-2);padding:7px 14px;border-radius:6px;margin-bottom:26px;}
+.eyebrow .pulse{width:6px;height:6px;border-radius:50%;background:var(--em);box-shadow:0 0 0 0 rgba(52,211,153,.5);animation:ping 2.2s infinite;}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(52,211,153,.5);}70%{box-shadow:0 0 0 8px rgba(52,211,153,0);}100%{box-shadow:0 0 0 0 rgba(52,211,153,0);}}
+h1{font-family:var(--disp);font-size:clamp(40px,5.8vw,72px);font-weight:700;letter-spacing:-.035em;line-height:1.03;margin-bottom:22px;}
+h1 em{font-style:normal;color:var(--cyan);text-shadow:0 0 40px rgba(56,189,248,.5);}
+.sub{font-size:18px;color:var(--t2);line-height:1.6;max-width:620px;margin:0 auto 32px;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center;}
+
+/* schematic */
+.schematic{margin-top:60px;position:relative;z-index:1;}
+.canvas{border:1px solid var(--line-2);border-radius:14px;background:linear-gradient(180deg,var(--panel),rgba(8,11,17,.6));padding:20px;position:relative;overflow:hidden;box-shadow:0 40px 90px -40px rgba(0,0,0,.9);}
+.canvas .corner{position:absolute;width:14px;height:14px;border-color:var(--cyan);opacity:.6;}
+.canvas .corner.tl{top:8px;left:8px;border-top:1.5px solid;border-left:1.5px solid;}
+.canvas .corner.tr{top:8px;right:8px;border-top:1.5px solid;border-right:1.5px solid;}
+.canvas .corner.bl{bottom:8px;left:8px;border-bottom:1.5px solid;border-left:1.5px solid;}
+.canvas .corner.br{bottom:8px;right:8px;border-bottom:1.5px solid;border-right:1.5px solid;}
+.canvas-lbl{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;}
+.schem-svg{width:100%;height:auto;display:block;}
+.flowpath{fill:none;stroke:var(--line-2);stroke-width:1.5;stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.4s cubic-bezier(.16,1,.3,1) forwards;}
+@keyframes draw{to{stroke-dashoffset:0;}}
+.node-rect{fill:var(--panel-2);stroke:var(--line-2);stroke-width:1.2;}
+.node-rect.engine{fill:rgba(56,189,248,.08);stroke:var(--cyan);}
+.node-text{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:var(--t1);}
+.node-sub{font-family:'IBM Plex Mono',monospace;font-size:8.5px;fill:var(--t3);letter-spacing:.08em;}
+.engine-title{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;fill:var(--cyan-br);}
+.packet{fill:var(--cyan);filter:drop-shadow(0 0 4px var(--cyan));}
+.packet.em{fill:var(--em);filter:drop-shadow(0 0 4px var(--em));}
+.col-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;fill:var(--t3);}
+.camp-title{font-size:10px;}
+/* campaign nodes flip to "remediated" (green) one by one, then loop */
+.camp-rect{transition:stroke .45s cubic-bezier(.16,1,.3,1),fill .45s cubic-bezier(.16,1,.3,1);}
+.camp .node-text{transition:fill .45s cubic-bezier(.16,1,.3,1);}
+.camp.remediated .camp-rect{stroke:var(--em);fill:rgba(52,211,153,.07);}
+.camp.remediated .node-text{fill:var(--em);}
+.rem-badge{opacity:0;transform:scale(.4);transform-box:fill-box;transform-origin:center;
+  transition:opacity .4s cubic-bezier(.16,1,.3,1),transform .4s cubic-bezier(.16,1,.3,1);}
+.camp.remediated .rem-badge{opacity:1;transform:scale(1);}
+.rem-badge circle{fill:var(--em);stroke:none;filter:drop-shadow(0 0 5px rgba(52,211,153,.6));}
+.rem-badge path{fill:none;stroke:#04121c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.reveal.in{opacity:1;transform:none;}
+.reveal.d1{transition-delay:.08s;}.reveal.d2{transition-delay:.16s;}.reveal.d3{transition-delay:.24s;}.reveal.d4{transition-delay:.32s;}
+
+section{position:relative;z-index:1;}
+.sec-head{max-width:680px;margin:0 auto 50px;text-align:center;}
+.sec-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan-br);margin-bottom:14px;}
+.sec-eyebrow::before{content:'// ';color:var(--t3);}
+.sec-title{font-family:var(--disp);font-size:clamp(28px,3.8vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:16px;}
+.sec-sub{color:var(--t2);font-size:16px;line-height:1.6;}
+
+/* trust */
+.trust{padding:50px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.trust-lbl{text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:26px;}
+.logos{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;}
+.logo-pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;padding:10px 15px;background:var(--panel);transition:border-color .25s,transform .25s;}
+.logo-pill:hover{border-color:var(--line-2);transform:translateY(-3px);}
+.logo-pill .lm{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;font-size:11px;color:#04121c;}
+.logo-pill span{font-family:var(--mono);font-size:12.5px;color:var(--t2);white-space:nowrap;}
+
+/* spec sheet sections */
+.spec{padding:90px 0;}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+@media(max-width:820px){.spec-grid{grid-template-columns:1fr;}}
+.spec-cell{padding:34px 30px;border-right:1px solid var(--line);position:relative;}
+.spec-cell:last-child{border-right:none;}
+@media(max-width:820px){.spec-cell{border-right:none;border-bottom:1px solid var(--line);}}
+.spec-cell .k{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;margin-bottom:18px;}
+.spec-cell .big{font-family:var(--disp);font-size:56px;font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--rose);font-feature-settings:"tnum";}
+.spec-cell.c2 .big{color:var(--amber);}.spec-cell.c3 .big{color:var(--cyan);}
+.spec-cell .big sup{font-size:26px;}
+.spec-cell p{color:var(--t2);font-size:13.5px;line-height:1.55;margin-top:14px;}
+
+/* steps */
+.steps-wrap{padding:90px 0;}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:980px){.steps{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.steps{grid-template-columns:1fr;}}
+.step{border:1px solid var(--line);border-radius:12px;padding:26px 22px;background:var(--panel);transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;}
+.step::before{content:'';position:absolute;top:0;left:22px;width:30px;height:2px;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+.step:hover{border-color:var(--line-2);transform:translateY(-5px);box-shadow:0 24px 50px -30px rgba(56,189,248,.5);}
+.step .n{font-family:var(--mono);font-size:11px;color:var(--cyan-br);margin:14px 0 16px;}
+.step .ic{width:44px;height:44px;border-radius:10px;border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--cyan);}
+.step h3{font-family:var(--disp);font-size:18px;font-weight:600;margin-bottom:9px;}
+.step p{color:var(--t2);font-size:13px;line-height:1.55;}
+
+/* engine */
+.engine{padding:90px 0;}
+.eng-grid{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;}
+@media(max-width:920px){.eng-grid{grid-template-columns:1fr;gap:40px;}}
+.eng-list{margin-top:24px;display:flex;flex-direction:column;gap:6px;}
+.eng-item{display:flex;gap:14px;padding:14px;border:1px solid transparent;border-radius:10px;transition:border-color .25s,background .25s;}
+.eng-item:hover{border-color:var(--line);background:var(--panel);}
+.eng-item .ck{width:24px;height:24px;border-radius:6px;border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;color:var(--em);flex-shrink:0;}
+.eng-item h4{font-family:var(--disp);font-size:15.5px;font-weight:600;margin-bottom:3px;}
+.eng-item p{color:var(--t2);font-size:13.5px;line-height:1.55;}
+.term{border:1px solid var(--line-2);border-radius:12px;overflow:hidden;background:rgba(8,11,17,.85);box-shadow:0 30px 70px -34px rgba(0,0,0,.9);}
+.term-bar{display:flex;align-items:center;gap:7px;padding:12px 15px;border-bottom:1px solid var(--line);}
+.term-bar .d{width:9px;height:9px;border-radius:50%;border:1px solid var(--line-2);}
+.term-bar .nm{margin-left:8px;font-family:var(--mono);font-size:10.5px;color:var(--t3);letter-spacing:.08em;}
+.term-body{padding:16px 16px;font-family:var(--mono);font-size:12px;line-height:1.9;min-height:180px;}
+.tl{display:flex;gap:10px;opacity:0;transform:translateY(4px);}
+.tl.show{opacity:1;transform:none;transition:all .3s;}
+.tl .tm{color:var(--t3);flex-shrink:0;}.tl .st{color:var(--cyan-br);width:78px;flex-shrink:0;}.tl .ms{color:var(--t2);}
+.tk{padding:1px 5px;border-radius:3px;}.tk.c{color:var(--cyan-br);background:rgba(56,189,248,.12);}.tk.k{color:var(--amber);background:rgba(251,191,36,.12);}.tk.o{color:var(--em);background:rgba(52,211,153,.12);}
+.caret{display:inline-block;width:7px;height:13px;background:var(--cyan);vertical-align:-2px;animation:blink 1s steps(1) infinite;}
+@keyframes blink{50%{opacity:0;}}
+
+/* outcomes */
+.outcomes{padding:90px 0;}
+.out-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:820px){.out-grid{grid-template-columns:repeat(2,1fr);}}
+.out{border:1px solid var(--line);border-radius:12px;padding:28px 22px;background:var(--panel);}
+.out .num{font-family:var(--disp);font-size:clamp(36px,4.5vw,52px);font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--cyan);font-feature-settings:"tnum";}
+.out .lbl{color:var(--t2);font-size:13px;margin-top:10px;font-family:var(--mono);}
+
+/* security */
+.sec-strip{padding:90px 0;}
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px;}
+@media(max-width:820px){.badges{grid-template-columns:1fr 1fr;}}
+.badge{border:1px solid var(--line);border-radius:12px;padding:22px 20px;background:var(--panel);transition:transform .3s,border-color .3s;}
+.badge:hover{transform:translateY(-4px);border-color:var(--line-2);}
+.badge .ic{width:38px;height:38px;border-radius:9px;border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;color:var(--cyan);margin-bottom:14px;}
+.badge b{font-family:var(--disp);font-size:14.5px;font-weight:600;display:block;margin-bottom:3px;}
+.badge span{font-family:var(--mono);font-size:11px;color:var(--t3);}
+
+/* cta */
+.cta{padding:110px 0;text-align:center;}
+.cta-inner{border:1px solid var(--line-2);border-radius:20px;padding:70px 40px;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 70% 130% at 50% 0%,rgba(56,189,248,.14),transparent 60%),var(--panel);}
+.cta-inner .corner{position:absolute;width:16px;height:16px;border-color:var(--cyan);opacity:.6;}
+.cta-inner .tl{top:12px;left:12px;border-top:1.5px solid;border-left:1.5px solid;}
+.cta-inner .tr{top:12px;right:12px;border-top:1.5px solid;border-right:1.5px solid;}
+.cta-inner .bl{bottom:12px;left:12px;border-bottom:1.5px solid;border-left:1.5px solid;}
+.cta-inner .br{bottom:12px;right:12px;border-bottom:1.5px solid;border-right:1.5px solid;}
+.cta h2{font-family:var(--disp);font-size:clamp(30px,4.5vw,50px);font-weight:700;letter-spacing:-.03em;margin-bottom:16px;}
+.cta p{color:var(--t2);font-size:17px;margin-bottom:32px;}
+.cta .hero-cta{justify-content:center;}
+
+footer{border-top:1px solid var(--line);padding:50px 0 38px;position:relative;z-index:1;}
+.foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:34px;}
+.foot-col h5{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:16px;}
+.foot-col a{display:block;color:var(--t2);font-size:13.5px;margin-bottom:10px;font-family:var(--mono);transition:color .2s;}
+.foot-col a:hover{color:var(--cyan-br);}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--t3);flex-wrap:wrap;gap:12px;}
+</style>
+<div class="grid-bg"></div>
+
+<nav id="nav">
+  <div class="wrap nav-in">
+    <div class="logo"><span class="logo-mark"></span> Ex-Layer</div>
+    <div class="nav-links">
+      <a href="#how">Platform</a><a href="#how">How it works</a><a href="#integrations">Integrations</a><a href="#security">Security</a>
+      <a href="#demo" class="btn btn-pri">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="pulse"></span> AI Remediation Engine</div>
+    <h1 class="reveal d1">The execution layer for <em>remediation.</em></h1>
+    <p class="sub reveal d2">Ex-Layer connects to any scanner and intelligently closes security issues at scale — with full context of your environment. Patch, script, or uninstall, with approvals and rollout built in.</p>
+    <div class="hero-cta reveal d3">
+      <a href="#demo" class="btn btn-pri">Book a demo →</a>
+      <a href="#engine" class="btn btn-ghost">View the architecture</a>
+    </div>
+    <!-- SCHEMATIC -->
+    <div class="schematic reveal d2">
+      <div class="canvas">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <span class="canvas-lbl">EX-LAYER · REMEDIATION EXECUTION PIPELINE</span>
+        <svg class="schem-svg" viewBox="0 0 940 430" preserveAspectRatio="xMidYMid meet">
+          <!-- column labels -->
+          <text class="col-lbl" x="24" y="24">SCANNERS</text>
+          <text class="col-lbl" x="708" y="18">REMEDIATION CAMPAIGNS</text>
+
+          <!-- connectors: sources -> engine -->
+          <path class="flowpath" d="M176,55 C300,55 300,207 380,207" style="animation-delay:.1s"/>
+          <path class="flowpath" d="M176,101 C300,101 305,207 380,207" style="animation-delay:.16s"/>
+          <path class="flowpath" d="M176,147 C310,147 330,207 380,207" style="animation-delay:.22s"/>
+          <path class="flowpath" d="M176,193 C310,193 345,207 380,207" style="animation-delay:.28s"/>
+          <path class="flowpath" d="M176,239 C310,239 345,207 380,207" style="animation-delay:.34s"/>
+          <path class="flowpath" d="M176,285 C310,285 330,207 380,207" style="animation-delay:.4s"/>
+          <path class="flowpath" d="M176,331 C300,331 305,207 380,207" style="animation-delay:.46s"/>
+          <path class="flowpath" d="M176,377 C300,377 300,207 380,207" style="animation-delay:.52s"/>
+          <!-- intel -> engine -->
+          <path class="flowpath" d="M500,56 L500,132" style="animation-delay:.5s"/>
+          <!-- engine -> campaigns -->
+          <path class="flowpath" d="M620,207 C680,207 660,55 708,55" style="animation-delay:.7s"/>
+          <path class="flowpath" d="M620,207 C680,207 670,123 708,123" style="animation-delay:.75s"/>
+          <path class="flowpath" d="M620,207 C690,207 700,191 708,191" style="animation-delay:.8s"/>
+          <path class="flowpath" d="M620,207 C690,207 690,259 708,259" style="animation-delay:.85s"/>
+          <path class="flowpath" d="M620,207 C680,207 660,327 708,327" style="animation-delay:.9s"/>
+
+          <!-- source nodes -->
+          <g><rect class="node-rect" x="24" y="36" width="152" height="38" rx="7"/><text class="node-text" x="42" y="59">SecOps Solution</text></g>
+          <g><rect class="node-rect" x="24" y="82" width="152" height="38" rx="7"/><text class="node-text" x="42" y="105">Tenable</text></g>
+          <g><rect class="node-rect" x="24" y="128" width="152" height="38" rx="7"/><text class="node-text" x="42" y="151">Qualys</text></g>
+          <g><rect class="node-rect" x="24" y="174" width="152" height="38" rx="7"/><text class="node-text" x="42" y="197">Defender VM</text></g>
+          <g><rect class="node-rect" x="24" y="220" width="152" height="38" rx="7"/><text class="node-text" x="42" y="243">CrowdStrike</text></g>
+          <g><rect class="node-rect" x="24" y="266" width="152" height="38" rx="7"/><text class="node-text" x="42" y="289">Rapid7</text></g>
+          <g><rect class="node-rect" x="24" y="312" width="152" height="38" rx="7"/><text class="node-text" x="42" y="335">Cortex</text></g>
+          <g><rect class="node-rect" x="24" y="358" width="152" height="38" rx="7"/><text class="node-text" x="42" y="381">Zscaler</text></g>
+
+          <!-- threat & exploit intel -->
+          <g><rect class="node-rect" x="380" y="20" width="240" height="36" rx="7"/><text class="node-text" x="400" y="42">THREAT · EXPLOIT INTELLIGENCE</text></g>
+
+          <!-- engine -->
+          <rect class="node-rect engine" x="380" y="132" width="240" height="150" rx="12"/>
+          <text class="engine-title" x="412" y="186">EX-LAYER ENGINE</text>
+          <text class="node-sub" x="412" y="210">correlate · de-dup · enrich</text>
+          <text class="node-sub" x="412" y="228">prioritize · draft · execute</text>
+          <rect x="412" y="246" width="176" height="6" rx="3" fill="rgba(56,189,248,.15)"/>
+          <rect x="412" y="246" width="120" height="6" rx="3" fill="var(--cyan)"/>
+
+          <!-- remediation campaigns -->
+          <g class="camp"><rect class="node-rect camp-rect" x="708" y="32" width="220" height="46" rx="8"/><text class="node-text camp-title" x="724" y="52">Patch all browsers — Finance</text><text class="node-sub" x="724" y="68">PATCH · 42 finance hosts</text><g class="rem-badge"><circle cx="915" cy="55" r="8"/><path d="M911.5 55 l3 3 l5 -6"/></g></g>
+          <g class="camp"><rect class="node-rect camp-rect" x="708" y="100" width="220" height="46" rx="8"/><text class="node-text camp-title" x="724" y="120">Critical patches — Staging</text><text class="node-sub" x="724" y="136">PATCH · staging-first rollout</text><g class="rem-badge"><circle cx="915" cy="123" r="8"/><path d="M911.5 123 l3 3 l5 -6"/></g></g>
+          <g class="camp"><rect class="node-rect camp-rect" x="708" y="168" width="220" height="46" rx="8"/><text class="node-text camp-title" x="724" y="188">Zero-downtime patch wave</text><text class="node-sub" x="724" y="204">PATCH · no reboot required</text><g class="rem-badge"><circle cx="915" cy="191" r="8"/><path d="M911.5 191 l3 3 l5 -6"/></g></g>
+          <g class="camp"><rect class="node-rect camp-rect" x="708" y="236" width="220" height="46" rx="8"/><text class="node-text camp-title" x="724" y="256">Remediate exploited CVEs</text><text class="node-sub" x="724" y="272">PATCH · 9 actively exploited</text><g class="rem-badge"><circle cx="915" cy="259" r="8"/><path d="M911.5 259 l3 3 l5 -6"/></g></g>
+          <g class="camp"><rect class="node-rect camp-rect" x="708" y="304" width="220" height="46" rx="8"/><text class="node-text camp-title" x="724" y="324">Remove end-of-life runtimes</text><text class="node-sub" x="724" y="340">UNINSTALL · Node 16 · Py 2</text><g class="rem-badge"><circle cx="915" cy="327" r="8"/><path d="M911.5 327 l3 3 l5 -6"/></g></g>
+
+          <!-- moving packets: sources -> engine -->
+          <circle class="packet" r="3.2"><animateMotion dur="2.4s" begin="1.0s" repeatCount="indefinite" path="M176,55 C300,55 300,207 380,207"/></circle>
+          <circle class="packet" r="3.2"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M176,101 C300,101 305,207 380,207"/></circle>
+          <circle class="packet" r="3.2"><animateMotion dur="2.4s" begin="1.4s" repeatCount="indefinite" path="M176,147 C310,147 330,207 380,207"/></circle>
+          <circle class="packet" r="3.2"><animateMotion dur="2.4s" begin="1.6s" repeatCount="indefinite" path="M176,193 C310,193 345,207 380,207"/></circle>
+          <circle class="packet" r="3.2"><animateMotion dur="2.4s" begin="1.8s" repeatCount="indefinite" path="M176,239 C310,239 345,207 380,207"/></circle>
+          <circle class="packet" r="3.2"><animateMotion dur="2.4s" begin="2.0s" repeatCount="indefinite" path="M176,285 C310,285 330,207 380,207"/></circle>
+          <circle class="packet" r="3.2"><animateMotion dur="2.4s" begin="2.2s" repeatCount="indefinite" path="M176,331 C300,331 305,207 380,207"/></circle>
+          <circle class="packet" r="3.2"><animateMotion dur="2.4s" begin="2.4s" repeatCount="indefinite" path="M176,377 C300,377 300,207 380,207"/></circle>
+          <circle class="packet" r="3.2"><animateMotion dur="2.0s" begin="1.4s" repeatCount="indefinite" path="M500,56 L500,132"/></circle>
+          <!-- moving packets: engine -> campaigns -->
+          <circle class="packet" r="3.4"><animateMotion dur="2.0s" begin="2.2s" repeatCount="indefinite" path="M620,207 C680,207 660,55 708,55"/></circle>
+          <circle class="packet" r="3.4"><animateMotion dur="2.0s" begin="2.5s" repeatCount="indefinite" path="M620,207 C680,207 670,123 708,123"/></circle>
+          <circle class="packet" r="3.4"><animateMotion dur="2.0s" begin="2.8s" repeatCount="indefinite" path="M620,207 C690,207 700,191 708,191"/></circle>
+          <circle class="packet" r="3.4"><animateMotion dur="2.0s" begin="3.1s" repeatCount="indefinite" path="M620,207 C690,207 690,259 708,259"/></circle>
+          <circle class="packet" r="3.4"><animateMotion dur="2.0s" begin="3.4s" repeatCount="indefinite" path="M620,207 C680,207 660,327 708,327"/></circle>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- TRUST -->
+<section class="trust" id="integrations">
+  <div class="wrap">
+    <div class="trust-lbl reveal">// connects to every scanner you already run</div>
+    <div class="logos">
+      <div class="logo-pill reveal"><span class="lm" style="background:linear-gradient(135deg,#7dd3fc,#38bdf8)">S</span><span>SecOps</span></div>
+      <div class="logo-pill reveal"><span class="lm" style="background:linear-gradient(135deg,#60a5fa,#3b82f6)">T</span><span>Tenable</span></div>
+      <div class="logo-pill reveal d1"><span class="lm" style="background:linear-gradient(135deg,#34d399,#10b981)">D</span><span>Defender VM</span></div>
+      <div class="logo-pill reveal d1"><span class="lm" style="background:linear-gradient(135deg,#f87171,#ef4444)">Q</span><span>Qualys</span></div>
+      <div class="logo-pill reveal d2"><span class="lm" style="background:linear-gradient(135deg,#fb923c,#f97316)">R</span><span>Rapid7</span></div>
+      <div class="logo-pill reveal d2"><span class="lm" style="background:linear-gradient(135deg,#a78bfa,#8b5cf6)">C</span><span>CrowdStrike Falcon</span></div>
+      <div class="logo-pill reveal d3"><span class="lm" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">P</span><span>Palo Alto Cortex</span></div>
+      <div class="logo-pill reveal d3"><span class="lm" style="background:linear-gradient(135deg,#22d3ee,#06b6d4)">Z</span><span>Zscaler Risk360</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM spec -->
+<section class="spec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">the remediation gap</div>
+      <h2 class="sec-title">Scanners find. Backlogs grow.</h2>
+      <p class="sec-sub">Every tool surfaces more findings than any team can fix. The exploit window stays open.</p>
+    </div>
+    <div class="spec-grid reveal d1">
+      <div class="spec-cell"><div class="k">breach origin</div><div class="big"><span class="cu" data-to="67">0</span><sup>%</sup></div><p>of breaches trace to a known, unpatched vulnerability a scanner had already flagged.</p></div>
+      <div class="spec-cell c2"><div class="k">critical MTTR</div><div class="big"><span class="cu" data-to="38">0</span><sup> d</sup></div><p>average remediation time for critical exposures — far past the exploit window.</p></div>
+      <div class="spec-cell c3"><div class="k">scanner overlap</div><div class="big"><span class="cu" data-to="3" data-suffix=".2">0</span><sup>×</sup></div><p>duplicate findings across overlapping scanners, inflating the backlog with noise.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps-wrap" id="how">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">pipeline</div>
+      <h2 class="sec-title">From found to fixed — autonomously.</h2>
+      <p class="sec-sub">One governed pipeline turns raw scanner output into executed remediation.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><polyline points="8 9 12 13 16 9"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div><div class="n">[01] INGEST</div><h3>Ingest</h3><p>Connect every scanner and EDR into one normalized exposure graph.</p></div>
+      <div class="step reveal d1"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a3 3 0 0 1 3 3v6"/><path d="M6 9v6a3 3 0 0 0 3 3h6"/></svg></div><div class="n">[02] CORRELATE</div><h3>Correlate</h3><p>De-duplicate across sources, enrich with threat &amp; exploit intelligence.</p></div>
+      <div class="step reveal d2"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="9" y2="18"/></svg></div><div class="n">[03] PRIORITIZE</div><h3>Prioritize</h3><p>Rank by real, exploited risk in your environment — not raw CVSS.</p></div>
+      <div class="step reveal d3"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="n">[04] REMEDIATE</div><h3>Remediate</h3><p>Auto-drafted campaigns with approvals, pilot rings &amp; rollout.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ENGINE -->
+<section class="engine" id="engine">
+  <div class="wrap eng-grid">
+    <div>
+      <div class="sec-eyebrow reveal" style="text-align:left">the engine</div>
+      <h2 class="sec-title reveal d1" style="text-align:left">An engine that reasons, then acts.</h2>
+      <p class="sec-sub reveal d2" style="text-align:left">It resolves intent, targets the fleet, and assembles a campaign — then you approve, pilot, and roll out. Every action is logged.</p>
+      <div class="eng-list">
+        <div class="eng-item reveal d2"><span class="ck"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div><h4>Drafts the fix automatically</h4><p>Patch deployment, remediation scripts, or software uninstall — per finding.</p></div></div>
+        <div class="eng-item reveal d3"><span class="ck"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div><h4>Approvals &amp; pilot rings</h4><p>Gate execution behind review, validate on a pilot ring, promote to fleet.</p></div></div>
+        <div class="eng-item reveal d4"><span class="ck"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div><h4>Schedule &amp; roll back</h4><p>Run on approval or in a maintenance window, with full audit and rollback.</p></div></div>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <div class="term">
+        <div class="term-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="nm">remediation-engine ~ live</span></div>
+        <div class="term-body" id="termBody"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section class="outcomes">
+  <div class="wrap">
+    <div class="sec-head reveal"><div class="sec-eyebrow">outcomes</div><h2 class="sec-title">Remediate in hours, not weeks.</h2></div>
+    <div class="out-grid">
+      <div class="out reveal"><div class="num"><span class="cu" data-to="90">0</span>%</div><div class="lbl">MTTR reduction</div></div>
+      <div class="out reveal d1"><div class="num"><span class="cu" data-to="3" data-suffix=".2">0</span>×</div><div class="lbl">findings de-duplicated</div></div>
+      <div class="out reveal d2"><div class="num"><span class="cu" data-to="100">0</span>%</div><div class="lbl">exploit-first coverage</div></div>
+      <div class="out reveal d3"><div class="num"><span class="cu" data-to="100">0</span>%</div><div class="lbl">auditable actions</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="sec-strip" id="security">
+  <div class="wrap">
+    <div class="sec-head reveal"><div class="sec-eyebrow">enterprise-ready</div><h2 class="sec-title">Trusted with production.</h2><p class="sec-sub">Every change is reviewed, piloted, and reversible — SaaS or fully on-prem, inside your perimeter.</p></div>
+    <div class="badges">
+      <div class="badge reveal"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><polyline points="9 12 11.3 14.3 15.5 9.5"/></svg></div><b>Approval gates</b><span>review before run</span></div>
+      <div class="badge reveal d1"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></div><b>Pilot rings</b><span>staged rollout</span></div>
+      <div class="badge reveal d2"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><b>RBAC + SSO</b><span>SAML / OIDC</span></div>
+      <div class="badge reveal d3"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg></div><b>Audit trail</b><span>every action</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="demo">
+  <div class="wrap">
+    <div class="cta-inner reveal">
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <h2>From scan to fixed — automatically.</h2>
+      <p>See Ex-Layer turn your real scanner findings into executed fixes — in 30 minutes.</p>
+      <div class="hero-cta"><a href="#" class="btn btn-pri">Book a demo →</a><a href="#" class="btn btn-ghost">Talk to sales</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col" style="max-width:260px">
+        <div class="logo" style="margin-bottom:14px"><span class="logo-mark"></span> Ex-Layer</div>
+        <p style="color:var(--t3);font-size:13px;line-height:1.6;font-family:var(--mono)">The execution layer for security remediation — from finding to fixed.</p>
+      </div>
+      <div class="foot-col"><h5>Product</h5><a href="#">Platform</a><a href="#">Integrations</a><a href="#">Security</a><a href="#">Pricing</a></div>
+      <div class="foot-col"><h5>Company</h5><a href="#">About</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Contact</a></div>
+      <div class="foot-col"><h5>Resources</h5><a href="#">Docs</a><a href="#">Changelog</a><a href="#">Trust center</a><a href="#">Status</a></div>
+    </div>
+    <div class="foot-bot"><span>© 2026 Ex-Layer, Inc.</span><span>// ai remediation engine</span></div>
+  </div>
+</footer>
+
+<script is:inline>
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20));
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+function countUp(el){const to=parseFloat(el.dataset.to),suf=el.dataset.suffix||'',dur=1500,t0=performance.now();
+  function tick(t){let p=Math.min((t-t0)/dur,1);p=1-Math.pow(1-p,3);let v=to*p;el.textContent=(suf?v.toFixed(1):Math.round(v));
+    if(p<1)requestAnimationFrame(tick);else el.textContent=(suf?to.toFixed(1):to);}requestAnimationFrame(tick);}
+const cuio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){countUp(e.target);cuio.unobserve(e.target);}})},{threshold:.6});
+document.querySelectorAll('.cu').forEach(el=>cuio.observe(el));
+// engine terminal
+const lines=[
+  {t:'00:00.2',st:'RESOLVE',ms:'intent → <span class="tk c">PATCH_DEPLOYMENT</span>'},
+  {t:'00:00.8',st:'CORRELATE',ms:'412 findings → <b style="color:var(--t1)">128</b> unique'},
+  {t:'00:01.4',st:'TARGET',ms:'<b style="color:var(--t1)">17</b> assets · <span class="tk k">1 exploited</span>'},
+  {t:'00:02.0',st:'PLAN',ms:'pilot ring 3 → full rollout'},
+  {t:'00:02.6',st:'READY',ms:'<span class="tk o">draft ready</span> — review'},
+];
+const body=document.getElementById('termBody');let li=0,started=false;
+function typeLine(){
+  if(li>=lines.length){setTimeout(()=>{body.innerHTML='';li=0;typeLine();},2600);return;}
+  const l=lines[li];const div=document.createElement('div');div.className='tl';
+  div.innerHTML=`<span class="tm">${l.t}</span><span class="st">${l.st}</span><span class="ms">${l.ms}<span class="caret"></span></span>`;
+  body.appendChild(div);requestAnimationFrame(()=>div.classList.add('show'));
+  const cs=body.querySelectorAll('.caret');cs.forEach((c,i)=>{if(i<cs.length-1)c.remove();});
+  li++;setTimeout(typeLine,li===lines.length?800:650);
+}
+const tio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting&&!started){started=true;setTimeout(typeLine,400);}})},{threshold:.4});
+tio.observe(document.querySelector('.term'));
+
+// schematic: campaigns flip to "remediated" one by one, then reset & loop
+(function(){
+  const camps=Array.from(document.querySelectorAll('.camp'));
+  if(!camps.length)return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){camps.forEach(c=>c.classList.add('remediated'));return;}
+  function cycle(){
+    camps.forEach(c=>c.classList.remove('remediated'));
+    camps.forEach((c,i)=>setTimeout(()=>c.classList.add('remediated'),1600+i*560));
+    setTimeout(cycle,1600+camps.length*560+3000);
+  }
+  cycle();
+})();
+</script>
+</Layout>

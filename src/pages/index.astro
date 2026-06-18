@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Ex-Layer — Landing directions" themeColor="#07071a" fontHref={"https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"}>
+<style is:inline slot="head">
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:#07071a;color:#eef0f8;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;padding:48px 24px;
+  background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(123,140,255,.12),transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 100%,rgba(255,50,104,.06),transparent 60%),#07071a;}
+.wrap{max-width:1080px;width:100%;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.28em;color:#9ba8ff;text-transform:uppercase;margin-bottom:14px;}
+h1{font-size:clamp(34px,5vw,52px);font-weight:800;letter-spacing:-.03em;margin-bottom:12px;}
+h1 em{font-style:normal;background:linear-gradient(100deg,#9ba8ff,#c7ceff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.lede{color:#a0a8c0;font-size:16px;line-height:1.6;max-width:620px;margin-bottom:44px;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:860px){.grid{grid-template-columns:1fr;}}
+.card{display:block;text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,.1);border-radius:18px;
+  overflow:hidden;background:#0d0d1f;transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s;}
+.card:hover{transform:translateY(-6px);border-color:rgba(123,140,255,.5);box-shadow:0 24px 60px -24px rgba(123,140,255,.4);}
+.swatch{height:120px;position:relative;overflow:hidden;}
+.swatch.a{background:linear-gradient(135deg,#0d0d1f,#1a1b3a);}
+.swatch.a::after{content:'';position:absolute;inset:0;background:
+  radial-gradient(circle at 70% 30%,rgba(123,140,255,.5),transparent 50%),
+  radial-gradient(circle at 30% 80%,rgba(255,50,104,.3),transparent 50%);}
+.swatch.b{background:#f5f7fb;}
+.swatch.b::after{content:'';position:absolute;left:24px;right:24px;bottom:0;top:50%;
+  background:linear-gradient(90deg,#1d4ed8,#0e9f6e);border-radius:10px 10px 0 0;}
+.swatch.c{background:#0a0e14;background-image:linear-gradient(rgba(56,189,248,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.12) 1px,transparent 1px);background-size:22px 22px;}
+.swatch.c::after{content:'';position:absolute;inset:30px;border:1.5px solid rgba(56,189,248,.6);border-radius:8px;
+  box-shadow:0 0 24px rgba(56,189,248,.4);}
+.card .body{padding:22px 22px 26px;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#5c6080;}
+.card h2{font-size:21px;font-weight:700;letter-spacing:-.01em;margin:6px 0 8px;}
+.card p{color:#a0a8c0;font-size:13.5px;line-height:1.6;}
+.open{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;color:#9ba8ff;letter-spacing:.04em;}
+.foot{margin-top:40px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#5c6080;line-height:1.7;}
+</style>
+<div class="wrap">
+  <div class="eyebrow">Ex-Layer · Landing page · 3 directions</div>
+  <h1>Pick a <em>direction</em>.</h1>
+  <p class="lede">Three distinct, fully-animated single-page mockups — same Ex-Layer story, three different design languages. Open each, scroll through, feel the motion, then tell me which one to take forward.</p>
+  <div class="grid">
+    <a class="card" href="/command-deck">
+      <div class="swatch a"></div>
+      <div class="body">
+        <div class="tag">Direction A</div>
+        <h2>Command Deck</h2>
+        <p>Product-true. Deep navy, electric indigo, a live engine terminal. Premium and technical — continuous with the Command Center.</p>
+        <span class="open">Open mockup →</span>
+      </div>
+    </a>
+    <a class="card" href="/boardroom">
+      <div class="swatch b"></div>
+      <div class="body">
+        <div class="tag">Direction B</div>
+        <h2>Boardroom</h2>
+        <p>Light, editorial, exec-credible. Cool off-white, cobalt + resolved-green, oversized outcome metrics. Built for the CISO deck.</p>
+        <span class="open">Open mockup →</span>
+      </div>
+    </a>
+    <a class="card" href="/blueprint">
+      <div class="swatch c"></div>
+      <div class="body">
+        <div class="tag">Direction C</div>
+        <h2>Blueprint</h2>
+        <p>Engineering schematic. Cyan blueprint lines on slate, an animated data-flow diagram, spec-sheet sections. For the technical evaluator.</p>
+        <span class="open">Open mockup →</span>
+      </div>
+    </a>
+  </div>
+  <div class="foot">Tip: open each in its own tab and scroll slowly to feel the entrance + scroll animations.<br>Shared copy across all three — judge the design language, not the words.</div>
+</div>
+</Layout>
